@@ -9,8 +9,8 @@ clock = pygame.time.Clock()
 test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 
 # surfaces
-sky_surface = pygame.image.load('graphics/Sky.png')
-ground_surface = pygame.image.load('graphics/Ground.png')
+sky_surface = pygame.image.load('graphics/Sky.png').convert_alpha()
+ground_surface = pygame.image.load('graphics/Ground.png').convert_alpha()
 text_surface = test_font.render('Look, it\'s a snail!', False, 'Black')
 
 # entities
