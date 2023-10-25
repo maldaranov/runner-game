@@ -12,6 +12,10 @@ test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 sky_surface = pygame.image.load('graphics/Sky.png').convert_alpha()
 ground_surface = pygame.image.load('graphics/Ground.png').convert_alpha()
 text_surface = test_font.render('Look, it\'s a snail!', False, 'Black')
+player_surface = pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
+
+# rectangles
+player_rect = player_surface.get_rect(midbottom = (80, 300))
 
 # entities
 snail_surface = pygame.image.load('graphics/snail/snail1.png')
@@ -30,6 +34,7 @@ while True:
     screen.blit(ground_surface, (0, 300))
     screen.blit(text_surface, (300, 50))
     screen.blit(snail_surface, (snail_x_pos, 250))
+    screen.blit(player_surface, player_rect)
     snail_x_pos = (snail_x_pos - 4) % 800
 
     pygame.display.update()
