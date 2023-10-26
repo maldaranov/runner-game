@@ -59,6 +59,7 @@ while True:
         elif (state == State.GAME_OVER):
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 state == State.PLAYING
+                snail_rect.left = 600
 
     # draw loop if game is running
     if (state == State.PLAYING):
@@ -86,7 +87,7 @@ while True:
     
     # draw loop if game is over
     elif (state == State.GAME_OVER):
-            screen.fill("Black")
+            print("game-over")
 
     pygame.display.update()
     clock.tick(60)
