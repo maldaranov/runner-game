@@ -3,14 +3,16 @@ from sys import exit
 
 # init
 pygame.init()
-screen = pygame.display.set_mode((800,400))
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 400
+screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 pygame.display.set_caption('runner-game')
 clock = pygame.time.Clock()
 
 # score-init
 score_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 score_surf = score_font.render('Look, it\'s a snail!', False, (64,64,64))
-score_rect = score_surf.get_rect(center = (400,50))
+score_rect = score_surf.get_rect(center = (WINDOW_WIDTH/2,50))
 
 # background-init
 sky_surf = pygame.image.load('graphics/Sky.png').convert_alpha()
@@ -35,6 +37,9 @@ while True:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 player_gravity = -20
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if player_rect.collidepoint(event.pos):
+                player_gravity = -20
     
     # background-draw
     screen.blit(sky_surf, (0,0))
@@ -45,12 +50,12 @@ while True:
     screen.blit(score_surf, score_rect)
 
     # snail-draw
-    snail_rect.left = (snail_rect.left - 5) % 800
+    snail_rect.left = (snail_rect.left - 5) % WINDOW_WIDTH
     screen.blit(snail_surface, snail_rect)
 
     # player-draw
-    player_gravity += 1
-    player_rect.y += player_gravity
+    # player_gravity += 1
+    player_rect.y = (player_rect.y + player_gravity) % WINDOW_WIDTH
     screen.blit(player_surface, player_rect)
 
     pygame.display.update()
