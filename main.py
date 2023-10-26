@@ -13,10 +13,8 @@ pygame.display.set_caption("runner-game")
 
 # game state class
 class State(Enum):
-    MENU = 0
-    PLAYING = 1
-    PAUSED = 2
-    SCOREBOARD = 3
+    PLAYING = 0
+    GAME_OVER = 1
 state = State.PLAYING
 
 # score-init
@@ -42,15 +40,27 @@ snail_rect = snail_surf.get_rect(midbottom = (600,300))
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
+            pygame.quit()  
             exit()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and player_rect.bottom == 300:
-                player_gravity = -20
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if player_rect.collidepoint(event.pos):
-                player_gravity = -20
-    
+
+        # event loop if game is running
+        if (state == State.PLAYING):
+            # player jump by pressing on the character model
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if player_rect.collidepoint(event.pos) and player_rect.bottom == 300:
+                    player_gravity = -20
+
+            # player jump by pressing "space" key
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and player_rect.bottom == 300:
+                    player_gravity = -20
+
+        # event loop if game is over
+        elif (state == State.GAME_OVER):
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                state == State.PLAYING
+
+    # draw loop if game is running
     if (state == State.PLAYING):
         # background-draw
         screen.blit(sky_surf, (0,0))
@@ -72,9 +82,11 @@ while True:
 
         # collisions
         if snail_rect.colliderect(player_rect):
-            state = State.SCOREBOARD
-    elif (state == State.SCOREBOARD):
-            pygame.quit()
-            exit()
+            state = State.GAME_OVER
+    
+    # draw loop if game is over
+    elif (state == State.GAME_OVER):
+            screen.fill("Black")
+
     pygame.display.update()
     clock.tick(60)
