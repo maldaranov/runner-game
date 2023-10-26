@@ -19,13 +19,13 @@ sky_surf = pygame.image.load('graphics/Sky.png').convert_alpha()
 ground_surf = pygame.image.load('graphics/Ground.png').convert_alpha()
 
 # player-init
-player_surface = pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
-player_rect = player_surface.get_rect(midbottom = (80,300))
+player_surf = pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
+player_rect = player_surf.get_rect(midbottom = (80,300))
 player_gravity = 0
 
 # snail-init
-snail_surface = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
-snail_rect = snail_surface.get_rect(midbottom = (600,300))
+snail_surf = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
+snail_rect = snail_surf.get_rect(midbottom = (600,300))
 
 
 # game loop
@@ -51,12 +51,14 @@ while True:
 
     # snail-draw
     snail_rect.left = (snail_rect.left - 5) % WINDOW_WIDTH
-    screen.blit(snail_surface, snail_rect)
+    screen.blit(snail_surf, snail_rect)
 
     # player-draw
-    # player_gravity += 1
-    player_rect.y = (player_rect.y + player_gravity) % WINDOW_WIDTH
-    screen.blit(player_surface, player_rect)
+    player_gravity += 1
+    player_rect.y += player_gravity
+    if player_rect.bottom >= 300: player_rect.bottom = 300
+    elif player_rect.top <= 0: player_rect.top = 0
+    screen.blit(player_surf, player_rect)
 
     pygame.display.update()
     clock.tick(60)
