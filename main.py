@@ -15,14 +15,15 @@ start_time = 0
 
 # game state class
 class State(Enum):
-    PLAYING = 0
-    GAME_OVER = 1
-state = State.PLAYING
+    MAIN_MENU = 0
+    PLAYING = 1
+    GAME_OVER = 2
+state = State.MAIN_MENU
 
 # score function
 def display_score():
     current_time = int(pygame.time.get_ticks() / 1000) - start_time
-    score_surf = game_font.render(f"{current_time}", False, (64,64,64))
+    score_surf = game_font.render(f"Score: {current_time}", False, (64,64,64))
     score_rect = score_surf.get_rect(center = (WINDOW_WIDTH/2, 50))
     screen.blit(score_surf, score_rect)
 
@@ -34,6 +35,9 @@ ground_surf = pygame.image.load("graphics/Ground.png").convert_alpha()
 player_surf = pygame.image.load("graphics/player/player_walk_1.png").convert_alpha()
 player_rect = player_surf.get_rect(midbottom = (80,300))
 player_gravity = 0
+player_stand_surf = pygame.image.load("graphics/player/player_stand.png").convert_alpha()
+player_stand_surf = pygame.transform.rotozoom(player_stand_surf,0,2)
+player_stand_rect = player_stand_surf.get_rect(center = (400,200))
 
 # snail-init
 snail_surf = pygame.image.load("graphics/snail/snail1.png").convert_alpha()
@@ -66,8 +70,19 @@ while True:
                 snail_rect.left = 600
                 start_time = int(pygame.time.get_ticks() / 1000)
 
-    # draw loop if game is running
-    if (state == State.PLAYING):
+        # event loope if game is in main menu
+        elif (state == State.MAIN_MENU):
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                state = State.PLAYING
+                snail_rect.left = 600
+                start_time = int(pygame.time.get_ticks() / 1000)
+
+    # main menu draw loop
+    if (state == State.MAIN_MENU):
+        screen.fill((94,129,162))
+        screen.blit(player_stand_surf, player_stand_rect)
+    # game is running draw loop
+    elif (state == State.PLAYING):
         # background-draw
         screen.blit(sky_surf, (0,0))
         screen.blit(ground_surf, (0,300))
