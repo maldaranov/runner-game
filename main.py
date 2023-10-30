@@ -64,7 +64,7 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 state = State.PLAYING
                 snail_rect.left = 600
-                start_time = pygame.time.get_ticks()
+                start_time = int(pygame.time.get_ticks() / 1000)
 
     # draw loop if game is running
     if (state == State.PLAYING):
