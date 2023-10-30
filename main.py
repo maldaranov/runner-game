@@ -10,6 +10,7 @@ GAME_STATE = "active"
 screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 clock = pygame.time.Clock()
 pygame.display.set_caption("runner-game")
+game_font = pygame.font.Font("font/Pixeltype.ttf", 50)
 
 # game state class
 class State(Enum):
@@ -17,10 +18,12 @@ class State(Enum):
     GAME_OVER = 1
 state = State.PLAYING
 
-# score-init
-score_font = pygame.font.Font("font/Pixeltype.ttf", 50)
-score_surf = score_font.render("Look, it\'s a snail!", False, (64,64,64))
-score_rect = score_surf.get_rect(center = (WINDOW_WIDTH/2,50))
+# score function
+def display_score():
+    current_time = pygame.time.get_ticks()
+    score_surf = game_font.render(f"{current_time}", False, (64,64,64))
+    score_rect = score_surf.get_rect(center = (WINDOW_WIDTH/2, 50))
+    screen.blit(score_surf, score_rect)
 
 # background-init
 sky_surf = pygame.image.load("graphics/Sky.png").convert_alpha()
@@ -68,8 +71,7 @@ while True:
         screen.blit(ground_surf, (0,300))
 
         # score-draw
-        pygame.draw.rect(screen, "#c0e8ec", score_rect)
-        screen.blit(score_surf, score_rect)
+        display_score()
 
         # snail-draw
         snail_rect.left = (snail_rect.left - 5) % WINDOW_WIDTH
