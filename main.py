@@ -11,6 +11,7 @@ screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 clock = pygame.time.Clock()
 pygame.display.set_caption("runner-game")
 game_font = pygame.font.Font("font/Pixeltype.ttf", 50)
+start_time = 0
 
 # game state class
 class State(Enum):
@@ -20,7 +21,7 @@ state = State.PLAYING
 
 # score function
 def display_score():
-    current_time = pygame.time.get_ticks()
+    current_time = pygame.time.get_ticks() - start_time
     score_surf = game_font.render(f"{current_time}", False, (64,64,64))
     score_rect = score_surf.get_rect(center = (WINDOW_WIDTH/2, 50))
     screen.blit(score_surf, score_rect)
@@ -43,7 +44,7 @@ snail_rect = snail_surf.get_rect(midbottom = (600,300))
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()  
+            pygame.quit()
             exit()
 
         # event loop if game is running
@@ -63,6 +64,7 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 state = State.PLAYING
                 snail_rect.left = 600
+                start_time = pygame.time.get_ticks()
 
     # draw loop if game is running
     if (state == State.PLAYING):
